@@ -17,10 +17,15 @@ const login = asyncHandler(async (req, res, next) => {
     if (fUser.registerAccess.confirm !== true)
       return errorReturn(res, { message: eM });
 
-    const key = '49951b24-8261-4020-87c5-2512bb6060be';
-    const plaintext = fUser.phone + fUser.name + fUser.surname;
+    const projectKey = '49951b24-8261-4020-87c5-2512bb6060be';
+    const key = '!CybErYaYAyAsi!.';
+
+    const plaintext = `?projectKey=${projectKey}&userName=${fUser.phone}&firstName=${fUser.name}&lastName=${fUser.surname}`;
+
     const encryptedPlainText = aes256.encrypt(key, plaintext);
+
     const redirect = `https://www.firsatlarkulubu.com/ServiceLoginWithToken?token=${encryptedPlainText}`;
+
     let result =
       fUser.role === 'Admin'
         ? { token: fUser.generateTokenJwt() }
