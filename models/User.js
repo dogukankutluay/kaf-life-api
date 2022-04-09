@@ -9,9 +9,11 @@ const UserSchema = new Schema(
     surname: String,
     email: {
       type: String,
-      unique: [true, 'required unique a email'],
     },
-    phone: String,
+    phone: {
+      type: String,
+      index: true,
+    },
     password: String,
     status: {
       type: String,
@@ -36,6 +38,7 @@ const UserSchema = new Schema(
       },
       code: String,
     },
+    tags: [String],
   },
   {
     timestamps: true,

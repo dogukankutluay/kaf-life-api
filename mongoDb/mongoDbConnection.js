@@ -4,6 +4,7 @@ const mongoDbConnection = () => {
 
     .connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
+      autoIndex: true,
     })
     .then(() => {
       console.log('MongoDB connetion successfull');

@@ -14,7 +14,7 @@ const login = asyncHandler(async (req, res, next) => {
     if (!comparePassword(password, fUser.password))
       return errorReturn(res, { message: eM });
     if (fUser.status !== 'Approve') return errorReturn(res, { message: eM });
-    if (fUser.registerAccess.confirm !== true)
+    if (fUser.role === 'User' && fUser.registerAccess.confirm !== true)
       return errorReturn(res, { message: eM });
 
     const projectKey = '49951b24-8261-4020-87c5-2512bb6060be';
@@ -45,9 +45,9 @@ const register = asyncHandler(async (req, res, next) => {
   try {
     const user = await User.create(body);
     if (!user) return errorReturn(res, { message: eM });
-    const sendSms = user.sendSmsForRegisterConfirmation();
+    // const sendSms = user.sendSmsForRegisterConfirmation();
     await user.save();
-    if (!sendSms) return errorReturn(res, { message: 'sms could not be sent' });
+    // if (!sendSms) return errorReturn(res, { message: 'sms could not be sent' });
     return successReturn(res, {
       user: {
         phone: user.phone,

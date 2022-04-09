@@ -3,9 +3,10 @@ const User = require('../models/User');
 const { successReturn, errorReturn } = require('../helpers/CustomReturn');
 const { createQueryObjects } = require('../helpers/general');
 const getUsers = asyncHandler(async (req, res, next) => {
+  const { q } = req.query;
   try {
-    const q = createQueryObjects(req.body, { role: 'User' });
-    const users = await User.find(q).select(
+    const qO = createQueryObjects(req.body, { role: 'User' });
+    const users = await User.find(qO).select(
       'name surname email phone status createdAt'
     );
     return successReturn(res, { users });
