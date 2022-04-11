@@ -25,7 +25,34 @@ const login = asyncHandler(async (req, res, next) => {
     const encryptedPlainText = aes256.encrypt(key, plaintext);
 
     const redirect = `https://www.firsatlarkulubu.com/ServiceLoginWithToken?token=${encryptedPlainText}`;
+    var axios = require('axios');
+    var qs = require('qs');
+    var data = qs.stringify({
+      Token: '49951b24-8261-4020-87c5-2512bb6060be',
+      DecryptText:
+        '?projectKey=afs1231d&userName=435323452&firstName=Test1&lastName=Test2',
+    });
+    var config = {
+      method: 'post',
+      url: 'https://www.firsatlarkulubu.com/api/usefk/EncryptText',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Cookie: '203292b2-b7f9-49d4-984e-ddf642b2d193',
+      },
+      data: data,
+    };
 
+    axios(config)
+      .then(function (response) {
+        console.log(response.data);
+        console.log(
+          'https://www.firsatlarkulubu.com/ServiceLoginWithToken?token=' +
+            response.data.EncryptedText
+        );
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     let result =
       fUser.role === 'Admin'
         ? { token: fUser.generateTokenJwt() }
