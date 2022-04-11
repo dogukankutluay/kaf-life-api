@@ -40,7 +40,7 @@ app.use('/api/v1', router);
 //for get file route
 
 //app start
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 
 // Socket setup
 
