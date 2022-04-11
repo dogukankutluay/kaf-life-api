@@ -1,4 +1,4 @@
-const { mongoDbConnection } = require('./mongodb/mongoDbConnection');
+const { mongoDbConnection } = require('./mongoDb/mongoDbConnection');
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
