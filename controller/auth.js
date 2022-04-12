@@ -18,19 +18,14 @@ const login = asyncHandler(async (req, res, next) => {
       return errorReturn(res, { message: eM });
 
     const projectKey = '49951b24-8261-4020-87c5-2512bb6060be';
-    const key = '!CybErYaYAyAsi!.';
 
     const plaintext = `?projectKey=${projectKey}&userName=${fUser.phone}&firstName=${fUser.name}&lastName=${fUser.surname}`;
 
-    const encryptedPlainText = aes256.encrypt(key, plaintext);
-
-    const redirect = `https://www.firsatlarkulubu.com/ServiceLoginWithToken?token=${encryptedPlainText}`;
     var axios = require('axios');
     var qs = require('qs');
     var data = qs.stringify({
       Token: '49951b24-8261-4020-87c5-2512bb6060be',
-      DecryptText:
-        '?projectKey=afs1231d&userName=435323452&firstName=Test1&lastName=Test2',
+      DecryptText: plaintext,
     });
     var config = {
       method: 'post',
@@ -44,20 +39,19 @@ const login = asyncHandler(async (req, res, next) => {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
-        console.log(
-          'https://www.firsatlarkulubu.com/ServiceLoginWithToken?token=' +
-            response.data.EncryptedText
-        );
+        let result =
+          fUser.role === 'Admin'
+            ? { token: fUser.generateTokenJwt() }
+            : {
+                redirect:
+                  'https://www.firsatlarkulubu.com/ServiceLoginWithToken?token=' +
+                  response.data.EncryptedText,
+              };
+        return successReturn(res, { ...result });
       })
       .catch(function (error) {
         console.log(error);
       });
-    let result =
-      fUser.role === 'Admin'
-        ? { token: fUser.generateTokenJwt() }
-        : { redirect };
-    return successReturn(res, { ...result });
   } catch (error) {
     console.log(error);
 
